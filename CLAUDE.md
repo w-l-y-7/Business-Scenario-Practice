@@ -27,6 +27,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 | `.claude/skills/` | 15 个技能：14 个 Superpowers 的中文版 + git-save（含原 git-ignore 的扫描能力），用途见 `.claude/skills/README.md` |
 | `.claude/hooks/` | 会话启动 hook；`session-start.ps1` 是实际生效的那个 |
 | `.claude/settings.json` | 项目级配置，注册 SessionStart hook |
+| `TODO.md` | 待办清单，配 `/loop` 定时推进 |
 | `workspace/inbox/` | 待处理文件投递箱 |
 | `workspace/tasks/` | 任务工作区，一任务一文件夹 `{YYYY-MM-DD}-{任务名}/` |
 | `workspace/daily/` | 每日处理流水 `{YYYY-MM-DD}.md` |

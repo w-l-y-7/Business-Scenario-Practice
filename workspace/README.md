@@ -17,7 +17,6 @@ date: 2026-09-09
 | archive/ | 长期归档 | 已完成任务按月归档，子目录命名 `{YYYY-MM}/` |
 | templates/ | 文档模板 | 做新文档先来这里复制打底 |
 | changelog.md | 任务日志 | 每次任务做完，在表里追加一行 |
-| TODO.md | 待办清单 | 要做的事按 task 块记在这里，配 /loop 定时推进 |
 | .claude/ | 自动化配置 | 规则(rules/)、定时循环(loops/)、子代理(agents/)、项目规则(CLAUDE.md) |
 | .gitignore | 排除规则 | 声明哪些文件不提交到版本库 |
 

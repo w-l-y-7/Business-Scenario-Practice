@@ -15,9 +15,9 @@
 1. 先把任务写进下面的 task 块，状态填 `pending`。
 2. 用 /loop 让 Claude 去干活。注意：/loop 只是「反复执行你交代的话」，Claude 不会自动知道你有个 TODO.md，所以交代的话里一定要写清楚「先读 TODO.md」。
    - 想定时推进，比如每 10 分钟干一件：
-     `/loop 10m 打开 workspace/TODO.md，找第一个 pending 任务，动手做完，把状态改成 completed，再继续下一个`
+     `/loop 10m 打开 TODO.md，找第一个 pending 任务，动手做完，把状态改成 completed，再继续下一个`
    - 想一口气把清单清完、节奏让 Claude 自己把控（不带时间间隔）：
-     `/loop 打开 workspace/TODO.md，把里面所有 pending 任务按顺序做完，做完一项就更新一次状态，全做完向我汇报`
+     `/loop 打开 TODO.md，把里面所有 pending 任务按顺序做完，做完一项就更新一次状态，全做完向我汇报`
 3. 中途想停：直接发消息说「停掉 /loop」就行。
 
 **几个提醒**
@@ -33,6 +33,11 @@
 - 描述：决定 Business Scenario Practice 要不要装 `.githooks/pre-commit`。参考 `investment project` 那份：它读 `save-gate/` 下的 test.passed 和 quality.passed 标记，而标记是 quality-engineer 和 tester 两个 subagent 生成的 —— 这两个 agent 在 BSP 已经删掉，直接搬过来会永久拦下所有带 `.py` 的提交。两个选项：一是不装钩子（BSP 以文档和流程为主，本来也不适合代码门禁），二是写个轻量版（提交前自动拦密钥和大文件）
 
 ## task-002
+
+- 状态：pending
+- 描述：补齐 `workspace/.claude/CLAUDE.md` 文件路由表引用的 8 个 skill（minimax-xlsx、minimax-docx、mineru、pdf、minimax-pdf、pptx-generator、work-report、doc-coauthoring）。这 8 个当前一个都没装 —— 往 `inbox/` 丢文件后，loop 扫到便签会去调不存在的技能。两条路：逐个建成真实 skill，或者改路由表让它在技能不存在时先问用户
+
+## task-003
 
 - 状态：<填：pending / in_progress / completed>
 - 描述：<一句话说明这个任务要做什么>
