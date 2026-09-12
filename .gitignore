@@ -1,0 +1,30 @@
+# ===== git-ignore 自动整理 2026-09-12 =====
+# 注：.vscode/ 故意不忽略——本仓库把 VSCode 编译配置当成果留档。
+
+## B 依赖 / 缓存目录
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+## C 系统垃圾文件
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+## D 隐私 / 密钥
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+## Claude Code 本机配置（每台机器不同，不入库）
+.claude/settings.local.json

@@ -1,0 +1,36 @@
+# ===== workspace 版本控制排除规则 =====
+# 只排除本工作区内的杂项；真正想留档的（daily/ reports/ changelog.md）不要写进去。
+
+# 系统垃圾文件
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# 临时/备份文件
+*.tmp
+*~
+*.bak
+*.swp
+
+# 日志
+*.log
+
+# Python 缓存（若工作区里有脚本）
+__pycache__/
+*.pyc
+
+# 环境与依赖
+node_modules/
+.venv/
+venv/
+
+# ── Office 文档 ───────────────────────────────────
+*.xlsx
+*.xls
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.pdf
+*.csv
+*.tsv
