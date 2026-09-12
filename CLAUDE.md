@@ -6,7 +6,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 
 两条线，各管各的：
 
-- **技能线**（根目录 `.claude/`）：14 个 Superpowers 技能，管的是「想清楚 → 拆计划 → 验算 → 排错」这套做事方法。
+- **技能线**（根目录 `.claude/`）：14 个 Superpowers 技能 + 1 个 git-save，管的是「想清楚 → 拆计划 → 验算 → 排错 → 存好档」这套做事方法。
 - **业务线**（`workspace/`）：自动化办公工作区。文件从 `inbox/` 投递进来，按便签拆成任务做完，产出日报、周报，并留痕归档。
 
 使用者是金融专业背景，做金融科技类课题，计算机基础薄弱。解释事情用大白话，术语首次出现配一句说明，别默认对方懂命令行、版本管理或数据结构。
@@ -18,14 +18,13 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 | 运行环境 | Claude Code（Skills、Subagents、Hooks、Loop） |
 | 脚本 | PowerShell（这台机器没有可用的 bash，见「环境注意」） |
 | 文档格式 | Markdown，全中文，不引入其他格式 |
-| 版本控制 | Git（本目录尚未 `git init`；`workspace/.gitignore` 已备好） |
+| 版本控制 | Git（已是仓库，分支 main，远程 `origin` 指向 github.com/w-l-y-7/Business-Scenario-Practice） |
 
 ## 目录结构
 
 | 路径 | 是什么 |
 | --- | --- |
-| `.claude/skills/` | 14 个 Superpowers 技能的中文版，用途见 `.claude/skills/README.md` |
-| `.claude/skills-backup/` | 替换前的 5 个旧技能（comment-check、git-ignore、git-save、security-audit、unit-test），留档备用 |
+| `.claude/skills/` | 15 个技能：14 个 Superpowers 的中文版 + git-save（含原 git-ignore 的扫描能力），用途见 `.claude/skills/README.md` |
 | `.claude/hooks/` | 会话启动 hook；`session-start.ps1` 是实际生效的那个 |
 | `.claude/settings.json` | 项目级配置，注册 SessionStart hook |
 | `workspace/inbox/` | 待处理文件投递箱 |
@@ -42,7 +41,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 
 用自己的话把需求说清楚就行，Claude 会自己挑技能；也可以直接打 `/技能名`。分档说明见 `.claude/skills/README.md`。
 
-**真用得上的五个**：
+**真用得上**：
 
 | 场景 | 走哪个技能 |
 | --- | --- |
@@ -50,6 +49,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 | 结果不对、报错、数字对不上 | `/systematic-debugging`，先定位根因再改 |
 | 金融计算（收益率、估值、手续费） | `/test-driven-development`，先写下期望值再让它算 |
 | 即将声称「做完了」 | `/verification-before-completion`，先跑验证再下结论 |
+| 想把改动存到 GitHub | `/git-save`，先扫垃圾文件写 `.gitignore`，再提交推送 |
 
 **偶尔用得上**：`/writing-skills`（把常做的流程固化成新技能）、`/requesting-code-review`、`/receiving-code-review`、`/dispatching-parallel-agents`。
 
@@ -105,7 +105,7 @@ Loop 只写定义文档，**不自动注册定时任务** —— 由用户手动
 | dev | 日常开发 |
 | feat/`<name>` | 功能分支，完成后合并回 dev |
 
-本目录尚未 `git init`，启用 Git 后按上面的约定走。
+主分支 main，远程 origin 已配好（`git remote -v` 可查）。日常提交走 `/git-save`。
 
 ### 测试
 
