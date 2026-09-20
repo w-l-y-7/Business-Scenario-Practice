@@ -6,7 +6,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 
 两条线，各管各的：
 
-- **技能线**（根目录 `.claude/`）：14 个 Superpowers 技能 + 1 个 git-save，管的是「想清楚 → 拆计划 → 验算 → 排错 → 存好档」这套做事方法。
+- **技能线**（根目录 `.claude/`）：分两层。**流程技能** 14 个 Superpowers 技能 + 1 个 git-save，管的是「想清楚 → 拆计划 → 验算 → 排错 → 存好档」这套做事方法；**领域技能** 6 个（财报分析、数据分析、基金评估、合规审计、政策简报、跨源研究），管具体的金融分析活。
 - **业务线**（`workspace/`）：自动化办公工作区。文件从 `inbox/` 投递进来，按便签拆成任务做完，产出日报、周报，并留痕归档。
 
 使用者是金融专业背景，做金融科技类课题，计算机基础薄弱。解释事情用大白话，术语首次出现配一句说明，别默认对方懂命令行、版本管理或数据结构。
@@ -24,7 +24,7 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 
 | 路径 | 是什么 |
 | --- | --- |
-| `.claude/skills/` | 15 个技能：14 个 Superpowers 的中文版 + git-save（含原 git-ignore 的扫描能力），用途见 `.claude/skills/README.md` |
+| `.claude/skills/` | 21 个技能：15 个流程技能（14 个 Superpowers 中文版 + git-save，含原 git-ignore 的扫描能力）+ 6 个金融领域技能。用途见 `.claude/skills/README.md` |
 | `.claude/hooks/` | 会话启动 hook；`session-start.ps1` 是实际生效的那个 |
 | `.claude/settings.json` | 项目级配置，注册 SessionStart hook |
 | `TODO.md` | 待办清单，配 `/loop` 定时推进 |
@@ -51,6 +51,22 @@ Business Scenario Practice —— 业务场景练习工作区。本文件给 Cla
 | 金融计算（收益率、估值、手续费） | `/test-driven-development`，先写下期望值再让它算 |
 | 即将声称「做完了」 | `/verification-before-completion`，先跑验证再下结论 |
 | 想把改动存到 GitHub | `/git-save`，先扫垃圾文件写 `.gitignore`，再提交推送 |
+
+**领域技能（做金融分析本身用）**：
+
+| 场景 | 走哪个技能 |
+| --- | --- |
+| A 股公司财报分析、比率计算、同业对比 | `quarterly-financial-analysis`（联网抓三大报表 → 算比率 → 对比行业基准 → 出报告） |
+| 分析 CSV / Excel / 数据库文件，或要实时行情 | `smart-data-analysis`（按行数和意图自动选本地 / sqlite / akshare 三条路） |
+| 一只基金的综合评估 | `fund-comprehensive-evaluation`（业绩 / 持仓 / 风险 / 合规四路并发） |
+| 一笔交易的合规检查 | `investment-compliance`（制裁筛查 + 集中度 + 关联交易 + 风险定级） |
+| 把政策 / 研报压成结构化简报 | `policy-brief-generator`（模板成稿 → 检查脚本 → 最多 3 轮精修 → 溯源核对） |
+| 跨学术文献 × 市场数据的主题研究 | `cross-platform-research`（**需先配两个 MCP，本机尚未配置**） |
+
+两组容易撞的边界，问清意图再选：①「股价走势 / 现价」→ `smart-data-analysis`；「财报 / 比率」→ `quarterly-financial-analysis`。②`quarterly-financial-analysis` 是**联网抓数自己算**；`investment-research/` 下的 `financial`、`earnings-extract` 是**从已有材料里提取和判断**。同一句话两边都沾边时，先问用户是要补数据，还是要对现有材料下判断。
+
+这 6 个技能的运行时产物（`data/`、`temp/`、`output/`）建在**当前会话工作目录**，仓库根已加入 `.gitignore`。
+
 
 **偶尔用得上**：`/writing-skills`（把常做的流程固化成新技能）、`/requesting-code-review`、`/receiving-code-review`、`/dispatching-parallel-agents`。
 
@@ -141,6 +157,22 @@ Loop 只写定义文档，**不自动注册定时任务** —— 由用户手动
 - **连 github.com 会被沙箱拦截**，`git clone` 要关沙箱才跑得动。
 - `.claude/hooks/hooks.json`、`run-hook.cmd`、`session-start` 是上游带来的 bash 版本，本机跑不起来。实际生效的是 `.claude/settings.json` 注册的 PowerShell hook。
 - `workspace/.claude/CLAUDE.md` 的「文件路由」表指向 8 个**尚未安装**的技能（minimax-xlsx、minimax-docx、mineru、pdf、minimax-pdf、pptx-generator、work-report、doc-coauthoring）。要用得先补装，否则会路由到不存在的技能。
+
+### Python / 数据分析环境（2026-09-07/08 实测，改动前先复核）
+
+领域技能用到 Python 时，这几条是实测结论，别凭记忆猜：
+
+- **Python 3.14**，`akshare` 1.18.94 已装。命令入口依次试 `python`、`py -3`。
+- **东财（EM）部分接口本机常被拒连**（`ConnectionError` / `RemoteDisconnected`）：
+  - 常被拒：逐股三大报表 `stock_*_sheet_by_report_em`、`stock_individual_info_em`、行业板块 `stock_board_industry_*_em`
+  - 实测可达：EM 业绩报表 `stock_yjbb_em(date=YYYYMMDD)`（全市场单表，含销售毛利率/所处行业）、申万 `sw_index_first_info` / `index_component_sw`、新浪 `stock_financial_analysis_indicator`（逐股）
+  - 各技能已内置「重试一次 → 友好降级 / 向用户要文件」路径。**降级不是 bug，绝不要伪造数据**。
+  - akshare 函数名用 `hasattr(ak, '...')` 内省现名，别凭记忆写。
+- 东财返回的报告日期常带 ` 00:00:00`，需剥掉时间部分（见 `fetch_statements.py`）。
+- 本机有 pandas / numpy / matplotlib / openpyxl / sqlite3 / requests；**没有** duckdb、flask。
+- 中文字体：matplotlib 用 Microsoft YaHei / SimHei 可正常绘中文。
+- CSV 中文读入按 utf-8(-sig) → gbk 回退，**别假定 UTF-8**。
+- pandas 的 str 存取器、日期解析跨版本有差异，涉及日期用纯 Python 归一化（仓库脚本已示范）。
 
 ## 红线
 

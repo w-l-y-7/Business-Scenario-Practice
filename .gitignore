@@ -1,6 +1,14 @@
 # ===== git-ignore 自动整理 2026-09-12 =====
 # 注：.vscode/ 故意不忽略——本仓库把 VSCode 编译配置当成果留档。
 
+## A 分析技能的运行时产物
+# 领域技能（quarterly-financial-analysis / smart-data-analysis 等）约定把 data/、temp/、output/
+# 建在「当前会话工作目录」，即仓库根。这些是每次跑都重新生成的中间产物，不入库。
+/output/
+/temp/
+/data/
+*_smoke/
+
 ## B 依赖 / 缓存目录
 node_modules/
 .venv/
@@ -28,3 +36,33 @@ Desktop.ini
 
 ## Claude Code 本机配置（每台机器不同，不入库）
 .claude/settings.local.json
+
+## E investment-research 的 PDF 原件与中间产物（2026-09-18）
+# 财报 PDF 共约 43MB，体积大又不会再变，入库只会撑大仓库；本地照常可读
+investment-research/**/*.pdf
+investment-research/temp/
+
+## F 排版编译产物（2026-09-19）
+# PDF 由 Markdown 现场重编，编译产物与中间文件不入库；
+# 字体是否随项目保留见 investment-research/README.md 的说明。
+investment-research/build/
+investment-research/**/*.aux
+investment-research/**/*.log
+investment-research/**/*.out
+investment-research/**/*.toc
+investment-research/**/*.bbl
+investment-research/**/*.blg
+investment-research/**/*.fls
+investment-research/**/*.fdb_latexmk
+investment-research/**/*.synctex.gz
+investment-research/**/*.xdv
+# figures/ 里的 PDF 是矢量图素材，上面那行 *.pdf 会误伤，这里放行
+!investment-research/figures/**/*.pdf
+
+# ===== git-ignore 自动整理 2026-09-20 =====
+## A investment-research 模型输出（跑一条命令就能重生成的产物）
+# 由 tools/model/run_model.py 生成（见 model/results/README.md）。现在里面装的是
+# 合成 test 模式的数，不得进仓库、不得与真实结果混淆；真实数据合并后会被覆盖。
+# 正式结果出来后再决定要不要留档。输入与假设照常入库，随时可重跑复现。
+investment-research/model/results/valuation.json
+investment-research/model/results/valuation-tables.md

@@ -1,0 +1,18 @@
+{
+  "skill_name": "quarterly-financial-analysis",
+  "description": "回归用例：财务比率口径正确性（累计/单季/TTM/期末标签）与触发边界（行情类应转 smart-data-analysis）。",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "分析 600519（贵州茅台）2025 年年报：抓三大报表 → 算核心比率 → 对照食品饮料行业基准逐项比较 → 按模板出报告。",
+      "expected_output": "data/raw/600519/ 下有利润表/资产负债表/现金流量表（累计+单季）与 meta.json；data/ratios_600519_2025-12-31.json 的 metrics 每项带 value+basis+definition，单季/累计/TTM 不混；data/compare_600519_2025-12-31.json 引用基准中位数；output/report_600519_2025-12-31.md 四段结构、金额为亿元、比率带口径标签、同比与对比数字与 JSON 一致。行业基准来自 references/industry_benchmarks.md 非占位示例。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "随便看看贵州茅台今天多少钱、近期怎么走。",
+      "expected_output": "不应触发本 skill（属 smart-data-analysis 实时行情路径）。本用例供触发测试：若本 skill 被唤起，应按描述里的边界提示改用 smart-data-analysis，而不是硬做财报流水线。",
+      "files": []
+    }
+  ]
+}

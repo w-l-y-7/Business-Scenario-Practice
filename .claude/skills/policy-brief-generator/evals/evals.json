@@ -1,0 +1,24 @@
+{
+  "skill_name": "policy-brief-generator",
+  "description": "回归用例：客观门槛（结构/篇幅/引用/溯源）由 check_brief.py 机械判定。源材料由用户在运行时提供（如一份真实政策文件/研究报告）。",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把这份政策文件 {用户指定路径} 压缩成一篇 1800 字左右的政策简报，走完整流程：按 assets/brief_template.md 成稿 → 跑 scripts/check_brief.py 机械检查 → 精修至全过 → 对照原文做事实溯源 → 定稿 output/brief_final.md。",
+      "expected_output": "temp/brief_draft.md 与 output/brief_final.md 存在；对终稿重跑 check_brief.py 返回码 0 且无 FAIL/WARN；结构=恰 1 个一级标题+摘要/背景/分析/建议+溯源清单；无 ###、无占位符；溯源清单每个文中〔#ID〕有对应行，状态已核对或待核齐全，待核条数单独向用户点出。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "同一份材料，用户只要 900 字以内的简报。",
+      "expected_output": "check_brief.py 以 --max 1000 运行通过（正文不含溯源清单 ≤1000 字口径）；其余硬结构与第 1 例一致。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "用户只给主题不给源材料，仍要求出简报。",
+      "expected_output": "先索要源材料；用户坚持没有时照常成稿，但第 4 步无法核对，溯源清单全部状态标「待核」，且向用户明示这是未经核对的初稿——不因缺料现编出处或把待核标成已核对。",
+      "files": []
+    }
+  ]
+}

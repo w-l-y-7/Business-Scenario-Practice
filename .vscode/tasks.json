@@ -1,0 +1,36 @@
+{
+  // 本仓库不靠 LaTeX Workshop 编译（没有 main.tex，入口是 PowerShell 脚本），
+  // 所以不给 LaTeX 配方，只给一个调用构建脚本的任务。
+  // 用法：Ctrl+Shift+B 直接出 PDF；或 Ctrl+Shift+P → Run Task 选下面几项。
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "investment-research：试排 PDF（样张）",
+      "type": "shell",
+      "command": "${workspaceFolder}/investment-research/tools/pdf/build.ps1",
+      "args": ["-InputPath", "tools/pdf/smoke/试排.md"],
+      "options": { "cwd": "${workspaceFolder}/investment-research" },
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "investment-research：导出正式报告 PDF",
+      "type": "shell",
+      "command": "${workspaceFolder}/investment-research/tools/pdf/build.ps1",
+      "args": ["-InputPath", "output/investment-report.md"],
+      "options": { "cwd": "${workspaceFolder}/investment-research" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "investment-research：估值模型自测",
+      "type": "shell",
+      "command": "python",
+      "args": ["-X", "utf8", "tools/model/selfcheck.py"],
+      "options": { "cwd": "${workspaceFolder}/investment-research" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}
