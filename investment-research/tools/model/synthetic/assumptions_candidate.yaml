@@ -1,0 +1,323 @@
+# 合成数据 —— 候选假设，**未经确认**。
+# 这份文件用来测「未确认的假设不能出正式结果」这条门禁，以及模型各条计算路径。
+#
+# 每一个 forecast 下的假设都要在 assumptions_register 里登记出处 ——
+# 没登记的不许进模型（schema.load_assumption_register 会拦）。
+
+status: candidate
+version: v-synthetic-2
+confirmed_by: null
+confirmed_on: null
+
+forecast:
+  years: 5
+  volume_growth: [0.10, 0.08, 0.06, 0.04, 0.03]
+  asp_growth: [0.02, 0.02, 0.02, 0.02, 0.02]
+  gross_margin: [0.40, 0.41, 0.41, 0.42, 0.42]
+  opex_ratio: [0.15, 0.15, 0.15, 0.15, 0.15]
+  dio_days: [120, 115, 110, 110, 110]
+  dso_days: [90, 90, 90, 90, 90]
+  dpo_days: [100, 100, 100, 100, 100]
+  capex_ratio: [0.12, 0.11, 0.10, 0.10, 0.10]
+  depreciation: [9.00, 10.00, 11.00, 12.00, 13.00]
+  net_borrowing: [2.00, 1.00, 0.00, 0.00, 0.00]
+  tax_rate: 0.15
+  share_issuance: [0.00, 0.00, 0.00, 0.00, 0.00]
+  # 三类之外的营运资本变动（预付、其他应收、合同负债等）—— 正数表示占用现金
+  other_working_capital_change: [0.60, 0.50, 0.40, 0.30, 0.30]
+  # 非现金项（股份支付、减值、公允价值变动、递延所得税等）—— 正数表示净利润里
+  # 有这么多没花掉现金，CFO 要加回
+  non_cash_items: [0.90, 1.00, 1.10, 1.20, 1.30]
+  # 分红率 —— 目标价那一步要用
+  dividend_payout_ratio: [0.30, 0.30, 0.35, 0.35, 0.40]
+
+discount:
+  ke: 0.10
+  wacc: 0.085
+  kd: 0.045
+  risk_free: 0.025
+
+terminal:
+  growth: 0.025
+  reinvestment_rate: 0.30
+
+scenarios:
+  bull:
+    volume_growth_delta: 0.05
+    gross_margin_delta: 0.02
+  bear:
+    volume_growth_delta: -0.08
+    gross_margin_delta: -0.03
+    dio_days_delta: 20
+
+# 三层可比，每层给两个前瞻口径。统一日期，否则倍数之间不可比。
+comparables:
+  as_of: "2026-09-18"
+  aggregate: median
+  tiers:
+    - name: 直接同业
+      peers:
+        - name: 合成同业 A
+          forward_pe: 18.00
+          ev_ebitda: 11.00
+        - name: 合成同业 B
+          forward_pe: 22.00
+          ev_ebitda: 13.00
+        - name: 合成同业 C
+          forward_pe: 20.00
+          ev_ebitda: 12.00
+    - name: 海外光通信
+      peers:
+        - name: 合成海外 D
+          forward_pe: 26.00
+          ev_ebitda: 15.00
+        - name: 合成海外 E
+          forward_pe: 24.00
+          ev_ebitda: 14.00
+    - name: 混合业务
+      peers:
+        - name: 合成混合 F
+          forward_pe: 15.00
+          ev_ebitda: 9.00
+
+discount_for_differences: null
+buy_threshold: null
+
+# 每条假设的出处与理由。少一条，schema 就会拦下来。
+assumptions_register:
+  - id: A-REV-VOL
+    item: forecast.volume_growth
+    value: [0.10, 0.08, 0.06, 0.04, 0.03]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据，无真实依据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据，等团队确认真实假设后替换
+  - id: A-REV-ASP
+    item: forecast.asp_growth
+    value: [0.02, 0.02, 0.02, 0.02, 0.02]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-GM
+    item: forecast.gross_margin
+    value: [0.40, 0.41, 0.41, 0.42, 0.42]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-OPEX
+    item: forecast.opex_ratio
+    value: [0.15, 0.15, 0.15, 0.15, 0.15]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-DIO
+    item: forecast.dio_days
+    value: [120, 115, 110, 110, 110]
+    unit: 天
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-DSO
+    item: forecast.dso_days
+    value: [90, 90, 90, 90, 90]
+    unit: 天
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-DPO
+    item: forecast.dpo_days
+    value: [100, 100, 100, 100, 100]
+    unit: 天
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-CAPEX
+    item: forecast.capex_ratio
+    value: [0.12, 0.11, 0.10, 0.10, 0.10]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-DA
+    item: forecast.depreciation
+    value: [9.00, 10.00, 11.00, 12.00, 13.00]
+    unit: 亿元
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-DEBT
+    item: forecast.net_borrowing
+    value: [2.00, 1.00, 0.00, 0.00, 0.00]
+    unit: 亿元
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-TAX
+    item: forecast.tax_rate
+    value: 0.15
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-SHARES
+    item: forecast.share_issuance
+    value: [0.00, 0.00, 0.00, 0.00, 0.00]
+    unit: 亿股
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-CAP
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-WC-OTHER
+    item: forecast.other_working_capital_change
+    value: [0.60, 0.50, 0.40, 0.30, 0.30]
+    unit: 亿元
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 让 FCFE 的两条路有各自驱动，差额桥不为 0
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-NONCASH
+    item: forecast.non_cash_items
+    value: [0.90, 1.00, 1.10, 1.20, 1.30]
+    unit: 亿元
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 让 FCFE 的两条路有各自驱动，差额桥不为 0
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-PAYOUT
+    item: forecast.dividend_payout_ratio
+    value: [0.30, 0.30, 0.35, 0.35, 0.40]
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 目标价重估要用「分掉多少」，不能拿 0 顶替
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  # 折现率与终值假设同样要登记 —— 它们直接决定估值高低，
+  # 是报告里最需要说清依据的几个数，不能只登记经营假设。
+  - id: A-KE
+    item: discount.ke
+    value: 0.10
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-WACC
+    item: discount.wacc
+    value: 0.085
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-KD
+    item: discount.kd
+    value: 0.045
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-RF
+    item: discount.risk_free
+    value: 0.025
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 反向估值拆隐含股权风险溢价用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-TG
+    item: terminal.growth
+    value: 0.025
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+  - id: A-TRR
+    item: terminal.reinvestment_rate
+    value: 0.30
+    unit: "%"
+    scenario: base
+    evidence: 合成数据
+    source_id: SYN-AR-2025
+    rationale: 测试用
+    owner: 待定
+    status: candidate
+    review_note: 合成数据
+
+reserved:
+  broker_attribution: null

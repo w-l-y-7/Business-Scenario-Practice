@@ -1,0 +1,66 @@
+# 候选假设 —— **未经确认，不得用于对外输出**。
+#
+# 这份文件填的是「我们打算这么预测」，状态标 candidate。
+# 审批前可以拿它算历史指标、核口径、搭模型、跑合成数据测试；
+# **不许用它产出正式估值、评级或目标价。**
+#
+# 分析师在「人在回路」第 2 节点确认后，把 status 改成 approved，
+# 并亲手填 confirmed_by / confirmed_on，另存为 approved.yaml。
+# **AI 不代签名、不预填、不把状态预先写成 approved。**
+
+status: candidate
+version: v1
+confirmed_by: null          # 由分析师填，AI 不代填
+confirmed_on: null          # 由分析师填，格式 YYYY-MM-DD
+
+forecast:
+  years: 5
+
+  # 收入驱动：销量 × ASP。两个都在，不要只写一个「收入增速」——
+  # 「出货量受产能限制只能增 30%」是可验证的判断，「收入增速 35%」不是。
+  volume_growth: []         # 逐年销量增速，如 [0.30, 0.20, 0.12, 0.08, 0.05]
+  asp_growth: []            # 逐年 ASP 增速
+
+  gross_margin: []          # 逐年毛利率
+  opex_ratio: []            # 逐年期间费用率
+
+  # 营运资本三件套（天数）
+  dio_days: []              # 存货周转天数
+  dso_days: []              # 应收账款周转天数
+  dpo_days: []              # 应付账款周转天数
+
+  capex_ratio: []           # 资本开支 / 营业收入
+  depreciation: []          # 逐年折旧摊销（亿元，绝对额）
+  net_borrowing: []         # 逐年净借款（亿元，正数 = 净借入）
+  tax_rate: null            # 所得税率
+  share_issuance: []        # 逐年股本变动（亿股，回购为负）
+
+discount:
+  ke: null                  # 股权成本 —— 必须大于 terminal.growth
+  wacc: null                # 加权平均资本成本（FCFF 用）
+  kd: null                  # 债务成本（税前）
+
+terminal:
+  growth: null              # 终值增长率 g，必须 < Ke
+  reinvestment_rate: null   # 稳定期再投资率
+
+# 三情景。写「相对基准的偏置」，不写概率 ——
+# **不默认配置情景概率**，没有依据就不预设。
+scenarios:
+  bull: {}
+  bear: {}
+
+comparables:
+  metric: forward_pe        # 远期倍数口径
+  aggregate: median         # median 或 mean
+  peers: []                 # 每家写 name 与 metric_value
+  # forward_metric_per_share: 可选，有券商一致预期时覆盖默认口径
+
+# 下面两项没有依据就留 null，不要为了「看起来完整」填一个数
+discount_for_differences: null   # 可比折价。只在差异有依据支持时施加
+buy_threshold: null              # 买入门槛比例（可选），不得改名为内在价值
+
+# 预留项：标注为「预留」，不写成已完成
+reserved:
+  reverse_dcf: null
+  broker_attribution: null

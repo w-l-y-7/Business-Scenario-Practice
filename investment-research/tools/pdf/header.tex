@@ -1,0 +1,75 @@
+% PDF 排版的 LaTeX 导言区，由 build.ps1 通过 --include-in-header 注入。
+% 默认值来自 output-format.md §一；**正式规则另有规定时以规则为准**。
+
+% ============ 字体 ============
+% 这是字体的唯一出处。要换字体只改这三行 —— build.ps1 不再传 -MainFont，
+% 因为 pandoc 只认 CJKmainfont、管不到 sans 与 mono，两处各设一半必然对不上
+% （正文换了字体、代码块里的中文还是旧字体，这种错很难一眼看出来）。
+\usepackage{xeCJK}
+\setCJKmainfont{Microsoft YaHei}
+\setCJKsansfont{Microsoft YaHei}
+\setCJKmonofont{Microsoft YaHei}
+
+% ============ 断行与标点 ============
+% 关掉标点悬挂。默认样式下，行首的「（」会被挂到版心外约半个字（实测 5.2 pt），
+% 版式上不算错，但会让 check_layout.py 的边距检查一直报红 ——
+% 与其放宽检查掩盖问题，不如让排版老实待在版心内。
+\xeCJKsetup{PunctStyle=plain}
+
+% 中文断行。不设的话，中文长段落在标点处会留下过大的空隙，
+% 实测造成 5 pt 左右的右边距溢出 —— 量不大，但试排检查会如实报出来。
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+% ①②③④⑤⑥⑦ 与 ⑴ 这类「带圈数字」在 Latin 字体里没有字形，
+% 不声明的话会被静默丢掉 —— 而正文标题里到处在用。
+% 把 Enclosed Alphanumerics 与带圈数字区间划给中文字体。
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF, "2776 -> "2793, "3220 -> "3229}
+
+% ============ 表格 ============
+\usepackage{longtable,booktabs,array}
+\renewcommand{\arraystretch}{1.15}
+% 表格过宽时压缩列距，而不是让文字冲出页面
+\setlength{\tabcolsep}{4pt}
+
+% 长 URL、长英文来源标注允许在需要处断行，避免整行溢出
+\usepackage{xurl}
+\setlength{\emergencystretch}{3em}
+\sloppy
+
+% ============ 图片 ============
+% pandoc 3.10 默认模板**不加载 graphicx** —— 不补这一行，文稿里的
+% ![](figures/x.png) 会编译失败或把路径当正文打出来。图片说明见 figures/README.md。
+\usepackage{graphicx}
+% 图片路径按项目根与 figures/ 两处找，正文里写 figures/F01-xxx.png 即可
+\graphicspath{{figures/}{./}}
+% 同时给宽高上限：横图按版心宽度缩，竖图按版心高度缩，都不变形、都不出血
+\setkeys{Gin}{width=\linewidth,height=\textheight,keepaspectratio}
+
+% ============ 来源 / 占位块 ============
+% 来源 / 脚注：8–9 pt。正文 markdown 里写成 ::: {.source} ... :::
+\newenvironment{source}{\par\footnotesize}{\par\vspace{0.3em}}
+
+% 占位内容：一眼可辨，不伪装成真数。写成 ::: {.placeholder} ... :::
+\newenvironment{placeholder}{\par\small\itshape}{\par\vspace{0.3em}}
+
+% ============ 页码 ============
+% 正文：页脚居中出页码
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% 封面：单独一页、不出页码，**且排完把页码计数重置为 1** ——
+% 校赛规定封面不计入正文，若正文从第 2 页起排，等于封面被算了进去。
+% markdown 里写 ::: {.cover} ... :::
+\newenvironment{cover}{\clearpage\thispagestyle{empty}}{\clearpage\setcounter{page}{1}}
+
+% 封底：同样不出页码，但**不重置计数** —— 它在文档最后，重置只会让页码倒退。
+% markdown 里写 ::: {.backcover} ... :::
+\newenvironment{backcover}{\clearpage\thispagestyle{empty}}{\clearpage}
+
+% ============ 浮动体 ============
+% 表格与图不在段落中间被撕开
+\usepackage{float}

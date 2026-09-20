@@ -1,0 +1,191 @@
+# 合成数据 —— 用于测试模型是否跑得通，**不是任何真实公司**。
+# 数字全是凑的整数，不得引用、不得进任何报告。
+#
+# 每个报告期都带最小字段集（CLAUDE.md §八），来源 id 指向同目录的
+# source_register.csv。这是为了让测试跑的就是正式代码路径，而不是一条简化旁路。
+
+meta:
+  company: 示例合成股份有限公司
+  ticker: 000000.SZ
+  currency: CNY
+  unit: 亿元
+  shares_unit: 亿股
+  source: 合成数据（tools/model/synthetic），非真实来源
+  info_cutoff: 2026-09-20
+  # 行情日期取**实际交易日**；请求日与它不同的情形另由 market_quote 表达
+  price_date: "2026-09-17"
+  # 估值基准日是 candidate —— 未经团队确认不得升为 approved
+  valuation_date: "2026-09-18"
+  target_date: "2027-09-18"
+  latest_price: 100.00
+  market_quote:
+    ticker: "000000.SZ"
+    exchange: SZ
+    requested_date: "2026-09-18"
+    actual_trade_date: "2026-09-17"
+    price_type: close
+    adjustment: none
+    close: 100.00
+    currency: CNY
+    source: 合成数据，非真实来源
+    source_grade: B
+    retrieved_at: "2026-09-20T10:00+08:00"
+    raw_record_path: tools/model/synthetic/raw/000000.SZ-2026-09-17.json
+    status: fallback
+
+actual:
+  2023A:
+    unit: 亿元
+    currency: CNY
+    period_start: "2023-01-01"
+    period_end: "2023-12-31"
+    publication_date: "2024-04-20"
+    source_file: tools/model/synthetic/historical.yaml
+    source_id: SYN-AR-2023
+    page: "不适用（合成数据）"
+    source_tier: A
+    assurance_status: 经审计
+    status: reported
+    revenue: 80.00
+    cogs: 50.00
+    operating_expenses: 12.00
+    ebit: 18.00
+    net_income: 12.00
+    depreciation_amortization: 6.00
+    capex: 10.00
+    inventory: 16.00
+    accounts_receivable: 20.00
+    accounts_payable: 14.00
+    interest_bearing_debt: 26.00
+    cash: 9.00
+    interest_expense: 1.30
+    net_income_attributable: 12.00
+    shares_outstanding: 10.00
+    operating_cash_flow: 13.00
+    income_tax: 2.00
+    total_assets: 90.00
+    total_liabilities: 40.00
+    equity_attributable: 50.00
+    minority_interest: 0.00
+    prepayments: 2.00
+    ppe_net: 30.00
+    ebitda: 17.30
+  2024A:
+    unit: 亿元
+    currency: CNY
+    period_start: "2024-01-01"
+    period_end: "2024-12-31"
+    publication_date: "2025-04-20"
+    source_file: tools/model/synthetic/historical.yaml
+    source_id: SYN-AR-2024
+    page: "不适用（合成数据）"
+    source_tier: A
+    assurance_status: 经审计
+    status: reported
+    revenue: 90.00
+    cogs: 55.00
+    operating_expenses: 13.50
+    ebit: 21.50
+    net_income: 13.50
+    depreciation_amortization: 7.00
+    capex: 11.00
+    inventory: 18.00
+    accounts_receivable: 22.50
+    accounts_payable: 16.00
+    interest_bearing_debt: 28.00
+    cash: 9.50
+    interest_expense: 1.40
+    net_income_attributable: 13.50
+    shares_outstanding: 10.00
+    operating_cash_flow: 15.00
+    income_tax: 2.25
+    total_assets: 98.00
+    total_liabilities: 43.00
+    equity_attributable: 55.00
+    minority_interest: 0.00
+    prepayments: 2.20
+    # 固定资产滚动：30.00 + 11.00 − 7.00 = 34.00
+    ppe_net: 34.00
+    ebitda: 19.40
+  2025A:
+    unit: 亿元
+    currency: CNY
+    period_start: "2025-01-01"
+    period_end: "2025-12-31"
+    publication_date: "2026-04-20"
+    source_file: tools/model/synthetic/historical.yaml
+    source_id: SYN-AR-2025
+    page: "不适用（合成数据）"
+    source_tier: A
+    assurance_status: 经审计
+    status: reported
+    revenue: 100.00
+    cogs: 60.00
+    operating_expenses: 15.00
+    ebit: 25.00
+    net_income: 15.00
+    depreciation_amortization: 8.00
+    capex: 12.00
+    inventory: 20.00
+    accounts_receivable: 25.00
+    accounts_payable: 18.00
+    interest_bearing_debt: 30.00
+    cash: 10.00
+    interest_expense: 1.50
+    net_income_attributable: 15.00
+    shares_outstanding: 10.00
+    operating_cash_flow: 17.00
+    income_tax: 2.50
+    total_assets: 105.00
+    total_liabilities: 45.00
+    equity_attributable: 60.00
+    minority_interest: 0.00
+    prepayments: 2.50
+    # 固定资产滚动：34.00 + 12.00 − 8.00 = 38.00
+    ppe_net: 38.00
+    ebitda: 21.50
+
+# 资本结构：股本桥 + 限制性股票 + H 股募集资金现金桥 + 四种股数口径
+capital_structure:
+  as_of: "2026-09-18"
+  source_id: SYN-CAP
+  share_bridge:
+    opening:
+      label: "2025-12-31 期末股本"
+      shares: 10.00
+      source_id: SYN-CAP
+    items:
+      - label: "限制性股票归属"
+        shares: 0.10
+        source_id: SYN-CAP
+      - label: "H 股发行"
+        shares: 0.50
+        source_id: SYN-CAP
+    closing:
+      label: "2026-09-18 期末股本"
+      shares: 10.60
+      source_id: SYN-CAP
+  restricted_stock:
+    plans:
+      - name: 合成第三期限制性股票激励计划
+        granted: 0.30
+        vested: 0.10
+        cancelled: 0.02
+        unvested: 0.18
+        source_id: SYN-CAP
+      - name: 合成第四期限制性股票激励计划
+        granted: 0.20
+        vested: 0.00
+        cancelled: 0.00
+        unvested: 0.20
+        source_id: SYN-CAP
+    total_unvested: 0.38
+  h_share_proceeds:
+    gross_proceeds: 8.00
+    net_proceeds: 7.60
+    uses:
+      - label: 合成生产基地建设
+        amount: 2.00
+    source_id: SYN-CAP
+  calibers:
+    basic_shares: 10.00

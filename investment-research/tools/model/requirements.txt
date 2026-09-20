@@ -1,0 +1,17 @@
+# tools/model 的依赖。只列依赖，不写 shell 命令 —— 运行命令见 README.md。
+#
+# 版本锁定原则：写在这里的每个版本都必须是本机实测跑通的版本，
+# 且必须能通过 `uv run --with-requirements` 在同一环境里复现。
+# 不得依赖全局环境里的隐式包 —— 全局装了什么不算数，这里没写就不许 import。
+
+# 假设与输入的 schema 校验（模型输入准入）
+pydantic==2.13.5
+
+# 反向估值：scipy.optimize.brentq 求单一未知量
+scipy==1.18.1
+
+# 测试
+pytest==9.1.1
+
+# YAML 读写：输入、假设、结果状态块
+PyYAML==6.0.3

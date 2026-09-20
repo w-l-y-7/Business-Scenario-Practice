@@ -1,0 +1,6 @@
+source_id,source_file,title,issuer,publication_date,page,source_type,source_tier,assurance_status,claim_type,retrieval_date,status,notes
+SYN-AR-2023,tools/model/synthetic/historical.yaml,合成数据 2023 年度,合成数据（非真实）,2024-04-20,不适用,official_filing,A,经审计,事实,2026-09-20,reported,合成数据，仅供模型自测，不得引用
+SYN-AR-2024,tools/model/synthetic/historical.yaml,合成数据 2024 年度,合成数据（非真实）,2025-04-20,不适用,official_filing,A,经审计,事实,2026-09-20,reported,合成数据，仅供模型自测，不得引用
+SYN-AR-2025,tools/model/synthetic/historical.yaml,合成数据 2025 年度,合成数据（非真实）,2026-04-20,不适用,official_filing,A,经审计,事实,2026-09-20,reported,合成数据，仅供模型自测，不得引用
+SYN-CAP,tools/model/synthetic/historical.yaml,合成数据资本结构,合成数据（非真实）,2026-09-18,不适用,official_filing,A,未经审计,事实,2026-09-20,reported,合成数据，仅供模型自测，不得引用
+SYN-LEAD,tools/model/synthetic/historical.yaml,合成数据线索类来源,合成数据（非真实）,2026-09-18,不适用,social_media,D,不适用,观点,2026-09-20,reported,测试用：线索类来源，正式模型不许引用
